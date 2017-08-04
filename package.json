@@ -1,7 +1,7 @@
 {
   "name": "vue-stripe-elements",
   "version": "0.0.1",
-  "description": "Stripe elements component for Vue.js",
+  "description": "Stripe elements plugin for Vue.js",
   "main": "dist/vue-stripe-elements.common.js",
   "jsnext:main": "src/main.js",
   "author": {
@@ -24,7 +24,5 @@
     "rollup-plugin-vue": "^2.4.1",
     "uglify-js": "^3.0.27"
   },
-  "dependencies": {
-    "vue": "^2.4.2"
-  }
+  "dependencies": {}
 }
