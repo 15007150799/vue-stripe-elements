@@ -1,25 +1,15 @@
+import Card from './components/Card/index.js'
 import CardCvc from './components/CardCvc/index.js'
 import CardExpiry from './components/CardExpiry/index.js'
 import CardNumber from './components/CardNumber/index.js'
-
-if (!Stripe) {
-  // injects Stripe.js into the browser
-  let StripeJS = document.createElement('script');
-  StripeJS.setAttribute('src','https://js.stripe.com/v3/');
-  document.getElementsByTagName('head')[0].appendChild(StripeJS);
-}
-
-// injects paymentfont into the browser
-let paymentfont = document.createElement('link');
-paymentfont.setAttribute('rel','stylesheet');
-paymentfont.setAttribute('type','text/css');
-paymentfont.setAttribute('href','https://cdnjs.cloudflare.com/ajax/libs/paymentfont/1.1.2/css/paymentfont.min.css');
-document.getElementsByTagName('head')[0].appendChild(paymentfont);
+import PostalCode from './components/PostalCode/index.js'
 
 const components = [
+  Card,
   CardCvc,
   CardExpiry,
-  CardNumber
+  CardNumber,
+  PostalCode
 ]
 
 const install = (Vue, options) => {

@@ -1,7 +1,7 @@
 <script>
 import _stripeElement from '../mixins/_stripeElement.js'
 export default {
-  name: 'stripe-card-expiry',
+  name: 'stripe-postal-code',
 
   mixins: [_stripeElement],
 
@@ -11,9 +11,8 @@ export default {
 
   data () {
     return {
-      type: 'cardExpiry'
+      type: 'postalCode'
     }
   }
 }
 </script>
-

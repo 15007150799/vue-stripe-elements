@@ -1,12 +1,6 @@
 export default {
   props: ['options'],
 
-  data () {
-    return {
-
-    }
-  },
-
   methods: {
     blur () {
       this._element.blur()
@@ -14,12 +8,15 @@ export default {
     focus () {
       this._element.focus()
     },
-    update () {
-      this._element.update()
+    update (options) {
+      this._element.update(options)
     },
-    mountElement () {
+    mount () {
       this._element.mount(this.$el)
-    } 
+    },
+    unmount () {
+      this._element.unmount()
+    }
   },
 
   beforeMount () {
@@ -36,10 +33,10 @@ export default {
   },
 
   mounted () {
-    this.mountElement()
+    this.mount()
   },
 
   beforeDestroy () {
-    this._element.unmount()
+    this.unmount()
   }
 }
