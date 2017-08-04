@@ -1,12 +1,13 @@
-import Vue from 'vue'
 import CardCvc from './components/CardCvc/index.js'
 import CardExpiry from './components/CardExpiry/index.js'
 import CardNumber from './components/CardNumber/index.js'
 
-// injects Stripe.js into the browser
-let StripeJS = document.createElement('script');
-StripeJS.setAttribute('src','https://js.stripe.com/v3/');
-document.getElementsByTagName('head')[0].appendChild(StripeJS);
+if (!Stripe) {
+  // injects Stripe.js into the browser
+  let StripeJS = document.createElement('script');
+  StripeJS.setAttribute('src','https://js.stripe.com/v3/');
+  document.getElementsByTagName('head')[0].appendChild(StripeJS);
+}
 
 // injects paymentfont into the browser
 let paymentfont = document.createElement('link');
@@ -18,17 +19,17 @@ document.getElementsByTagName('head')[0].appendChild(paymentfont);
 const components = [
   CardCvc,
   CardExpiry,
-  CardNumber,
+  CardNumber
 ]
 
 const install = (Vue, options) => {
   let stripe
   try {
     stripe = Stripe(options.publishableKey);
-    Vue.stripe = Vue.prototype.$stripe = stripe
     components.forEach(component => {
       Vue.component(component.name, component)
     })
+    Vue.stripe = Vue.prototype.$stripe = stripe
   } catch (error) {
     console.log(error)
   }

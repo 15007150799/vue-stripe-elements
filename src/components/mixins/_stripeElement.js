@@ -1,4 +1,3 @@
-<script>
 export default {
   props: ['options'],
 
@@ -44,4 +43,3 @@ export default {
     this._element.unmount()
   }
 }
-</script>

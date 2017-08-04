@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import _stripeElement from '../mixins/_stripeElement.vue'
+import _stripeElement from '../mixins/_stripeElement.js'
 export default {
   name: 'stripe-card-number',
 
