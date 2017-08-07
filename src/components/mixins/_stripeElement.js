@@ -29,10 +29,10 @@ export default {
     this.context.registerElement(this._element)
 
     this._element.on('blur', event => {
-      this.$emit('blur')
+      this.$emit('blur', event)
     })
     this._element.on('focus', event => {
-      this.$emit('focus')
+      this.$emit('focus', event)
     })
     this._element.on('change', event => {
       this.$emit('change', event)

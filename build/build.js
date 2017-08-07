@@ -5,6 +5,7 @@ var uglify = require('uglify-js')
 var babel = require('rollup-plugin-babel')
 var vue = require('rollup-plugin-vue')
 var replace = require('rollup-plugin-replace')
+var eslint = require('rollup-plugin-eslint')
 var pack = require('../package.json')
 var version = process.env.VERSION || pack.version
 var external = Object.keys(pack.dependencies || {})
@@ -28,7 +29,8 @@ rollup.rollup({
   entry: 'src/main.js',
   plugins: [
     vue(),
-    babel()
+    babel(),
+    eslint()
   ]
 })
 .then(function (bundle) {
@@ -49,7 +51,8 @@ rollup.rollup({
       replace({
         'process.env.NODE_ENV': "'development'"
       }),
-      babel()
+      babel(),
+      eslint()
     ]
   })
   .then(function (bundle) {
@@ -72,7 +75,8 @@ rollup.rollup({
       replace({
         'process.env.NODE_ENV': "'production'"
       }),
-      babel()
+      babel(),
+      eslint()
     ]
   })
   .then(function (bundle) {

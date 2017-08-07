@@ -14,7 +14,7 @@ const components = [
 
 const init = (publishableKey, stripeAccount) => {
 
-  const _instance = Stripe(publishableKey, stripeAccount)
+  const _instance = window.Stripe(publishableKey, stripeAccount)
 
   // extend the stripe object instance with new properties and methods
   const _stripe = {
