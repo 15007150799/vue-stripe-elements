@@ -12,19 +12,62 @@ const components = [
   PostalCode
 ]
 
-const install = (Vue, options) => {
-  let stripe
-  try {
-    stripe = Stripe(options.publishableKey);
-    components.forEach(component => {
-      Vue.component(component.name, component)
-    })
-    Vue.stripe = Vue.prototype.$stripe = stripe
-  } catch (error) {
-    console.log(error)
+const init = (publishableKey, stripeAccount) => {
+
+  const _instance = Stripe(publishableKey, stripeAccount)
+
+  // extend the stripe object instance with new properties and methods
+  const _stripe = {
+    ..._instance,
+    init,
+    createElements () {
+      const _elements = this.elements()
+      // extend stripe elements instance with new properties and methods
+      const _context = {
+        ..._elements,
+
+        // collecting all elements created on the same instance of elements
+        registeredElements: [],
+        
+        registerElement (target) {
+          this.registeredElements.push(target)
+        },
+        
+        unregisterElement (target) {
+          this.registeredElements = this.registeredElements.filter(el => {
+            return el !== target
+          })
+        },
+
+        // tokenize data from elements registered on the context
+        createToken (cardData = {}) {
+          const _card = this.registeredElements.find(el => {
+            return el._componentName === 'card' || 'cardNumber'
+          })
+          return _stripe.createToken(_card, cardData)
+        }
+      }
+
+      return _context
+    }
   }
+  return _stripe
 }
 
-export default {
-  install
+const install = (Vue, options = {}) => {
+  if (!window.Stripe) {
+    throw new Error(
+      'Please load Stripe.js (https://js.stripe.com/v3/) on this page to use vue-stripe-elements.'
+    );
+  }
+  
+  const _stripe = init(options.publishableKey, options.stripeAccount)
+  Vue.stripe = Vue.prototype.$stripe = _stripe
+
+  // register components
+  components.forEach(component => {
+    Vue.component(component.name, component)
+  })
 }
+
+export default install

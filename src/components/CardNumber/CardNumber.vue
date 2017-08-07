@@ -5,10 +5,6 @@ export default {
 
   mixins: [_stripeElement],
 
-  render (h) {
-    return h('div')
-  },
-
   data () {
     return {
       type: 'cardNumber'
