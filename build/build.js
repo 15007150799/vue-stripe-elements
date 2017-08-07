@@ -28,9 +28,7 @@ rollup.rollup({
   entry: 'src/main.js',
   plugins: [
     vue(),
-    babel({
-      presets: ['es2015-rollup']
-    })
+    babel()
   ]
 })
 .then(function (bundle) {
@@ -51,9 +49,7 @@ rollup.rollup({
       replace({
         'process.env.NODE_ENV': "'development'"
       }),
-      babel({
-        presets: ['es2015-rollup']
-      })
+      babel()
     ]
   })
   .then(function (bundle) {
@@ -76,9 +72,7 @@ rollup.rollup({
       replace({
         'process.env.NODE_ENV': "'production'"
       }),
-      babel({
-        presets: ['es2015-rollup']
-      })
+      babel()
     ]
   })
   .then(function (bundle) {
