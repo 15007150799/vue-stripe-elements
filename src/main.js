@@ -63,11 +63,12 @@ const install = (Vue, options = {}) => {
   
   const _stripe = init(options.publishableKey, options.stripeAccount)
   Vue.stripe = Vue.prototype.$stripe = _stripe
-
   // register components
   components.forEach(component => {
     Vue.component(component.name, component)
   })
 }
 
-export default install
+export default {
+  install
+}
