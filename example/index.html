@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stripe Elements Example</title>
+    <script src="https://unpkg.com/vue@2.4.2"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="../dist/vue-stripe-elements.min.js"></script>
+</head>
+
+<style type="text/css">
+  .StripeElement {
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+  }
+
+  .StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+  }
+
+  .StripeElement--invalid {
+    border-color: #fa755a;
+  }
+
+  .StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+  }
+</style>
+
+<body>
+  <div id="app">
+
+    <form action="/charge" method="post" id="payment-form">
+      <div class="form-row">
+        <label for="card-element">
+          Credit or debit card
+        </label>
+        <!-- <div id="card-element"> -->
+          <!-- a Stripe Element will be inserted here. -->
+        <!-- </div> -->
+        <stripe-card :options="options"
+                     :context="elements"
+                     @change="onChange"
+        ></stripe-card>
+
+        <!-- Used to display form errors -->
+        <div id="card-errors" role="alert"></div>
+      </div>
+
+      <button @click="createToken">Submit Payment</button>
+    </form>
+
+
+<!--     <stripe-card :options="options"
+                 :context="elements2"
+    ></stripe-card>
+
+
+    <stripe-card-expiry :context="elements"
+    ></stripe-card-expiry>
+    <stripe-card-cvc :context="elements"></stripe-card-cvc>
+    <stripe-postal-code :context="elements"></stripe-postal-code>
+    <stripe-card-number :context="elements"></stripe-card-number> -->
+
+
+    <!-- <button @click="createToken">Create</button> -->
+  </div>
+
+  <script>
+    Vue.use(VueStripeElements['default'], {
+      publishableKey: 'pk_test_6pRNASCoBOKtIshFeQd4XMUh'
+    })
+
+    var app = new Vue({
+      el: '#app',
+      data: function() {
+        return {
+          elements: undefined,
+          options: {
+            base: {
+              color: '#32325d',
+              lineHeight: '24px',
+              fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+              fontSmoothing: 'antialiased',
+              fontSize: '16px',
+              '::placeholder': {
+                color: '#aab7c4'
+              }
+            },
+            invalid: {
+              color: '#fa755a',
+              iconColor: '#fa755a'
+            }
+          }
+        }
+      },
+
+      methods: {
+        onChange (event) {
+          var displayError = document.getElementById('card-errors');
+          if (event.error) {
+            displayError.textContent = event.error.message;
+          } else {
+            displayError.textContent = '';
+          }
+        },
+        createToken () {
+          this.elements.createToken()
+            .then(token => {
+              // Insert the token ID into the form so it gets submitted to the server
+              // var form = document.getElementById('payment-form');
+              // var hiddenInput = document.createElement('input');
+              // hiddenInput.setAttribute('type', 'hidden');
+              // hiddenInput.setAttribute('name', 'stripeToken');
+              // hiddenInput.setAttribute('value', token.id);
+              // form.appendChild(hiddenInput);
+
+              // Submit the form
+              // form.submit();
+            })
+            .catch(err => {
+              var errorElement = document.getElementById('card-errors');
+              errorElement.textContent = result.error.message;
+            })
+        }
+      },
+      created () {
+        this.elements = this.$stripe.createElements()
+      },
+      mounted () {
+        
+      }
+    })
+  </script>
+
+</body>
+</html>
