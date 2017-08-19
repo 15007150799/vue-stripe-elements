@@ -1,5 +1,9 @@
 export default {
-  props: ['options'],
+  props: ['context', 'options'],
+
+  render (h) {
+    return h('div')
+  },
 
   methods: {
     blur () {
@@ -20,15 +24,21 @@ export default {
   },
 
   beforeMount () {
-    this._element = this.$stripe.elements().create(this.type, this.options)
+    this._element = this.context.create(this.type, this.options)
+
+    this.context.registerElement(this._element)
+
     this._element.on('blur', event => {
-      this.$emit('blur')
+      this.$emit('blur', event)
     })
     this._element.on('focus', event => {
-      this.$emit('focus')
+      this.$emit('focus', event)
     })
     this._element.on('change', event => {
       this.$emit('change', event)
+    })
+    this._element.on('ready', event => {
+      this.$emit('ready', event)
     })
   },
 

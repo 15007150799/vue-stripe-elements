@@ -1,7 +1,3 @@
-<template>
-  <div/>
-</template>
-
 <script>
 import _stripeElement from '../mixins/_stripeElement.js'
 export default {
