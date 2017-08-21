@@ -9,9 +9,31 @@
 </head>
 
 <style type="text/css">
+  body, html {
+    background-color: #f6f9fc;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  }
+
+  .container {
+    width: 1080px;
+    margin: 0 auto;
+    padding-top: 50px;
+  }
+
+  .title {
+    font-weight: 500;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 8px;
+    color: #6b7c93;
+  }
+
   .StripeElement {
+    display: block;
+    width: 500px;
+    margin: 0 0 5px 0;
     background-color: white;
-    padding: 8px 12px;
+    padding: 11px 12px;
     border-radius: 4px;
     border: 1px solid transparent;
     box-shadow: 0 1px 3px 0 #e6ebf1;
@@ -30,45 +52,78 @@
   .StripeElement--webkit-autofill {
     background-color: #fefde5 !important;
   }
+
+  #card-errors {
+    height: 20px;
+    padding: 4px 0;
+    color: #fa755a;
+    font-size: 14px;
+  }
+
+  .pay-btn {
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    text-decoration: none;
+    color: #fff;
+    background: #32325d;
+    white-space: nowrap;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 14px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-decoration: none;
+    -webkit-transition: all 150ms ease;
+    transition: all 150ms ease;
+    float: left;
+    margin-left: 12px;
+    margin-top: 26px;
+  }
+
+  .pay-btn:hover {
+    cursor: pointer;
+    transform: translateY(-1px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, .10), 0 3px 6px rgba(0, 0, 0, .08);
+    background-color: #43458b;
+  }
+
+  .block {
+    display: flex;
+    justify-content: center;
+  }
 </style>
 
 <body>
   <div id="app">
+  <div class="container">
 
-    <form action="/charge" method="post" id="payment-form">
-      <div class="form-row">
-        <label for="card-element">
+
+    <div class='block'>
+      <div>
+        <div class="title">
           Credit or debit card
-        </label>
-        <!-- <div id="card-element"> -->
-          <!-- a Stripe Element will be inserted here. -->
-        <!-- </div> -->
+        </div>
+
+        <!-- Stripe card element -->
         <stripe-card :options="options"
                      :context="elements"
                      @change="onChange"
         ></stripe-card>
 
-        <!-- Used to display form errors -->
+        <!-- Used to display errors -->
         <div id="card-errors" role="alert"></div>
       </div>
 
-      <button @click="createToken">Submit Payment</button>
-    </form>
+      <!-- Used to display errors -->
+      <button class="pay-btn" @click="createToken">Checkout</button>
+    </div>
+  </div>
 
-
-<!--     <stripe-card :options="options"
-                 :context="elements2"
-    ></stripe-card>
-
-
-    <stripe-card-expiry :context="elements"
-    ></stripe-card-expiry>
-    <stripe-card-cvc :context="elements"></stripe-card-cvc>
-    <stripe-postal-code :context="elements"></stripe-postal-code>
-    <stripe-card-number :context="elements"></stripe-card-number> -->
-
-
-    <!-- <button @click="createToken">Create</button> -->
   </div>
 
   <script>
@@ -111,29 +166,21 @@
         },
         createToken () {
           this.elements.createToken()
-            .then(token => {
-              // Insert the token ID into the form so it gets submitted to the server
-              // var form = document.getElementById('payment-form');
-              // var hiddenInput = document.createElement('input');
-              // hiddenInput.setAttribute('type', 'hidden');
-              // hiddenInput.setAttribute('name', 'stripeToken');
-              // hiddenInput.setAttribute('value', token.id);
-              // form.appendChild(hiddenInput);
-
-              // Submit the form
-              // form.submit();
+            .then(result => {
+              if (result.error) {
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+              } else {
+                alert('Token: ' + result.token.id)
+              }
             })
             .catch(err => {
-              var errorElement = document.getElementById('card-errors');
-              errorElement.textContent = result.error.message;
+              alert(err)
             })
         }
       },
       created () {
         this.elements = this.$stripe.createElements()
-      },
-      mounted () {
-        
       }
     })
   </script>
